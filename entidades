@@ -1,0 +1,52 @@
+El proyecto debe tener el siguiente modelo de datos (minimo)
+Usuarios:
+	- codUsuario (int)
+	- nombreUsuario (string(100))
+	- claveUsuario (string(8))
+	- codTipoUsuario (int)
+	- codCategoriaCliente (int)
+Novedades:
+	- codNovedad (int)
+	- textoNovedad (string(200))
+	- fechaDesdeNovedad (date)
+	- fechaHastaNovedad (date)
+	- codTipoUsuario (int)
+Promociones:
+	- codPromocion (int)
+	- textoPromo (string(200))
+	- fechaDesdePromo (date)
+	- fechaHastaPromo (date)
+	- codCategoriaMinimaCliente (int)
+	- diasSemana (array[0..6] int)
+	- estadoPromo (string(10))
+	- codLocal (int)
+Locales:
+	- codLocal (int)
+	- nombreLocal (string(100))
+	- ubicacionLocal (string(50))
+	- rubroLocal (string(20))
+	- codUsuario (int)
+Uso_Promociones:
+	- codCliente (int)
+	- codPromocion (int)
+	- fechaUsoPromocion (date)
+	- estado (string(10))
+Tipos_Usuario:
+	- codTipoUsuario (int)
+	- descripcionTipoUsuario (string(50))
+CategoriasClientes:
+	- codCategoriaCliente (int)
+	- descripcionCategoria (string(50))
+	- nivelCategoria (int)
+
+
+
+
+
+
+
+
+
+
+
+

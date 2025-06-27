@@ -1,0 +1,8 @@
+php artisan db:seed                                 -> Ejecuta seeds definidos en DatabaseSeeder.php
+php artisan db:seed --class=TiposUsuariosSeeder     -> Ejecuta un seed en particular.
+
+php artisan make:seeder TiposUsuariosSeeder                         -> Crea un seed.
+php artisan make:factory TipoUsuarioFactory --model=TipoUsuario     -> Crea una factory usando un modelo definido.
+
+php artisan migrate:fresh     -> Elimina todas las tablas definidas en las migrations.
+php artisan migrate           -> Crea las tablas definidas en las migrations.
