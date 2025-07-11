@@ -2,8 +2,19 @@
 
 @section('content')
 
-@if(isset($auth))
+
+
 <div class="container">
+
+    <h2>Cliente</h2>
+    <h3>Funciones</h3>
+    <ul>
+        <li>✓️ Registrarse en el sistema para acceder a las ofertas del shopping.</li>
+        <li>Buscar descuentos en los locales del shopping.</li>
+        <li>Ingresar el código de un local y elegir un descuento disponible.</li>
+        <li>✓️ Ver las novedades del shopping.</li>
+    </ul>
+
 
     <h2>Promociones Vigentes</h2>
     <div class="row">
@@ -36,6 +47,9 @@
 
 
 </div>
-@endif
-    
+
+
+
+
+
 @endsection

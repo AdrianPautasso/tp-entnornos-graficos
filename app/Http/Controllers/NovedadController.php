@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Promocion;
+use App\Models\Novedad;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
-class PromocionController extends Controller
+class NovedadController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,7 @@ class PromocionController extends Controller
     {
         //
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -27,7 +29,7 @@ class PromocionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Promocion $promocion)
+    public function show(Novedad $novedad)
     {
         //
     }
@@ -35,7 +37,7 @@ class PromocionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Promocion $promocion)
+    public function update(Request $request, Novedad $novedad)
     {
         //
     }
@@ -43,7 +45,7 @@ class PromocionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Promocion $promocion)
+    public function destroy(Novedad $novedad)
     {
         //
     }

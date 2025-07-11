@@ -6,3 +6,6 @@ php artisan make:factory TipoUsuarioFactory --model=TipoUsuario     -> Crea una 
 
 php artisan migrate:fresh     -> Elimina todas las tablas definidas en las migrations.
 php artisan migrate           -> Crea las tablas definidas en las migrations.
+
+
+php artisan serve   -> Levanta el servidor y el proyecto

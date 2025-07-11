@@ -97,7 +97,7 @@ class UsuariosSeeder extends Seeder
                 'nombre' => $data['nombre'],
                 'usuario' => $data['usuario'],
                 'email' => $data['email'],
-                'clave' => Hash::make($data['usuario']),
+                'password' => Hash::make($data['usuario']),
                 'idTipo' => $data['idTipo'],
                 'idCategoriaCliente' => $data['idTipo'] === 3 ? $data['idCategoriaCliente'] : null,
                 'created_at' => Carbon::now(),

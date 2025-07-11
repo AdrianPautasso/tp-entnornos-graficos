@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Novedad extends Model
 {
@@ -17,4 +18,22 @@ class Novedad extends Model
         'idCategoriaMinima'
     ];
 
+    public static function getVigentes()
+    {
+        $hoy = Carbon::today();
+        return self::whereDate('fechaDesde', '<=', $hoy)
+                    ->whereDate('fechaHasta', '>=', $hoy)
+                    ->latest()
+                    ->get();
+    }
+
+    public static function getVigentesPorCategoria($idCategoria) {
+        $hoy = Carbon::today();
+        return self::where('idCategoriaMinima', '<=', $idCategoria)
+                    ->whereDate('fechaDesde', '<=', now())
+                    ->whereDate('fechaHasta', '>=', now())
+                    ->latest()
+                    ->get();
+    }
 }
+

@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Usuario extends Model
+class Usuario extends Authenticatable
 {
+
+    protected $table = 'usuarios';
+
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'int';
@@ -15,10 +18,25 @@ class Usuario extends Model
         'nombre',
         'usuario',
         'email',
-        'clave',
+        'password',
         'idTipo',
-        'idCategoriaCliente'
+        'idCategoriaCliente',
+        'aprobado'
     ];
+
+    protected static function booted()
+    {
+                
+        static::creating(function ($usuario) {
+            $tipo = TipoUsuario::find($usuario->idTipo);
+
+            if ($tipo && strtolower($tipo->nombre) === 'dueño') {
+                $usuario->aprobado = false;
+            } else {
+                $usuario->aprobado = true;
+            }
+        });
+    }
 
     public function tipoUsuario(): BelongsTo
     {

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Promocion extends Model
 {
@@ -38,5 +39,32 @@ class Promocion extends Model
         return $this->belongsToMany(Usuario::class, 'usos_promociones', 'idPromocion', 'idCliente')
                     ->withPivot('fechaUso', 'estado')
                     ->withTimestamps();
+    }
+
+    public static function getVigentesYAprobadas() {
+        return self::whereDate('fechaDesde', '<=', now())
+            ->whereDate('fechaHasta', '>=', now())
+            ->where('estado', 'Aprobada')
+            ->latest()
+            ->get();
+    }
+
+    public static function getVigentesYAprobadasPorLocal($locales) {
+        return self::whereIn('idLocal', $locales->pluck('id'))
+                    ->where('estado', 'Aprobada')
+                    ->whereDate('fechaDesde', '<=', now())
+                    ->whereDate('fechaHasta', '>=', now())
+                    ->latest()
+                    ->get();
+    }
+
+    public static function getVigentesYAprobadasPorCategoria($idCategoria) {
+        return self::where('idCategoriaMinima', '<=', $idCategoria)
+                    ->where('estado', 'Aprobada')
+                    ->whereDate('fechaDesde', '<=', now())
+                    ->whereDate('fechaHasta', '>=', now())
+                    ->latest()
+                    ->get();
+    
     }
 }

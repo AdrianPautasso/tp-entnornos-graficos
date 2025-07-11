@@ -14,7 +14,7 @@ class CreateUsuariosTable extends Migration
             $table->string('nombre', 100);
             $table->string('usuario', 100);
             $table->string('email', 100);
-            $table->string('clave', 255); // Usamos 255 para bcrypt
+            $table->string('password', 255); // Usamos 255 para bcrypt
             $table->unsignedBigInteger('idTipo'); // debe ser unsignedBigInteger
             $table->unsignedBigInteger('idCategoriaCliente')->nullable();
 
