@@ -45,21 +45,21 @@ class UsuariosSeeder extends Seeder
                 'nombre' => 'Lucía Fernández',
                 'usuario' => 'lfernandez',
                 'email' => 'lucia@example.com',
-                'idTipo' => 2,
+                'idTipo' => 2, // Dueña
                 'idCategoriaCliente' => null,
             ],
             [
                 'nombre' => 'Carlos Méndez',
                 'usuario' => 'cmendez',
                 'email' => 'carlos@example.com',
-                'idTipo' => 2,
+                'idTipo' => 2, // Dueña
                 'idCategoriaCliente' => null,
             ],
             [
                 'nombre' => 'Laura Benítez',
                 'usuario' => 'lbenitez',
                 'email' => 'laura@example.com',
-                'idTipo' => 2,
+                'idTipo' => 2, // Dueña
                 'idCategoriaCliente' => null,
             ],
                         [
@@ -81,7 +81,7 @@ class UsuariosSeeder extends Seeder
                 'usuario' => 'lorenzolischetti',
                 'email' => 'lorenzo@example.com',
                 'idTipo' => 3, // Cliente
-                'idCategoriaCliente' => 2, // Medium
+                'idCategoriaCliente' => 3, // Premium
             ],
                         [
                 'nombre' => 'Eugenia Bortolotto',

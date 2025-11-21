@@ -21,7 +21,7 @@ class PromocionesSeeder extends Seeder
                 'fechaHasta' => Carbon::now()->addDays(10)->toDateString(),
                 'idCategoriaMinima' => 1, // Inicial
                 'estado' => 'Aprobada',
-                'diasSemana' => json_encode(['Lunes','Martes','Miercoles','Jueves','Viernes']), // Texto
+                'diasSemana' => ['Lunes','Martes','Miercoles','Jueves','Viernes'], // Texto
                 'idLocal' => 1,
             ],
             [
@@ -30,7 +30,7 @@ class PromocionesSeeder extends Seeder
                 'fechaHasta' => Carbon::now()->addDays(7)->toDateString(),
                 'idCategoriaMinima' => 2, // Medium
                 'estado' => 'Pendiente',
-                'diasSemana' => json_encode(['Sabado','Domingo']),
+                'diasSemana' => ['Sabado','Domingo'],
                 'idLocal' => 2,
             ],
             [
@@ -39,7 +39,7 @@ class PromocionesSeeder extends Seeder
                 'fechaHasta' => Carbon::now()->addDays(5)->toDateString(),
                 'idCategoriaMinima' => 3, // Premium
                 'estado' => 'Aprobada',
-                'diasSemana' => json_encode(['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo']),
+                'diasSemana' => ['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'],
                 'idLocal' => 3,
             ],
             [
@@ -48,7 +48,7 @@ class PromocionesSeeder extends Seeder
                 'fechaHasta' => Carbon::now()->addDays(14)->toDateString(),
                 'idCategoriaMinima' => 1,
                 'estado' => 'Denegada',
-                'diasSemana' => json_encode(['Martes','Jueves','Sabado']),
+                'diasSemana' => ['Martes','Jueves','Sabado'],
                 'idLocal' => 4,
             ],
         ];

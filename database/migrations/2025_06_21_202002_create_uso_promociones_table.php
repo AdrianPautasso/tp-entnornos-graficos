@@ -9,6 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('usos_promociones', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('idUsuario');
             $table->unsignedBigInteger('idPromocion');
             $table->date('fechaUso');
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->foreign('idUsuario')->references('id')->on('usuarios')->onDelete('cascade');
             $table->foreign('idPromocion')->references('id')->on('promociones')->onDelete('cascade');
 
-            $table->primary(['idUsuario', 'idPromocion']); // Clave compuesta
+            //$table->primary(['idUsuario', 'idPromocion']); // Clave compuesta
         });
     }
 

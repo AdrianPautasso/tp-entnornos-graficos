@@ -12,8 +12,8 @@ class CreateLocalesTable extends Migration
             $table->id(); // id BIGINT AUTO_INCREMENT PRIMARY KEY
             $table->string('nombre', 100);
             $table->string('ubicacion', 50);
-            $table->string('rubro', 20);
-            $table->unsignedBigInteger('idUsuario');
+            $table->string('rubro', 50);
+            $table->unsignedBigInteger('idUsuario')->nullable();
             $table->timestamps();
 
             // Clave foránea hacia usuarios

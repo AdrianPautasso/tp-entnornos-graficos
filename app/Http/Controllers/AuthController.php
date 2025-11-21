@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use App\Models\TipoUsuario;
+use App\Models\Local;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\QueryException;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -35,7 +37,8 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
-            if ($user->idTipo == "Dueño" && ! $user->aprobado) {
+            
+            if ($user->idTipo == 2 && ! $user->aprobado) {
                 Auth::logout();
                 return redirect()->route('login')->withErrors([
                     'usuario' => 'Tu cuenta aún no fue aprobada por un administrador.',
@@ -67,21 +70,24 @@ class AuthController extends Controller
             return redirect()->route('home');
         }
 
-        $tipos = TipoUsuario::all();
-        return view('auth.register', compact('tipos'));
+        $tipos = TipoUsuario::whereIn('id', [2,3])->get();
+        $locales = Local::whereNull('idUsuario')->get();
+        return view('auth.register', compact('tipos', 'locales'));
     }
 
     // Procesar registro
-    public function register(Request $request)
-    {
+    public function register(Request $request) {
         
         try {
+
+            $tiposPermitidos = [2,3];
             $validated = $request->validate([
                 'nombre' => 'required|string|max:100',
                 'email' => 'required|email|unique:usuarios,email',
                 'usuario' => 'required|string|max:100|unique:usuarios,usuario',
                 'password' => 'required|min:6|confirmed',
-                'idTipo' => 'required|exists:tipos_usuarios,id',
+                'idTipo' => ['required', Rule::in($tiposPermitidos)],
+                'idLocal' => 'nullable|integer|exists:locales,id',
             ]);
 
             $usuario = new Usuario();
@@ -90,8 +96,18 @@ class AuthController extends Controller
             $usuario->usuario = $validated['usuario'];
             $usuario->password = Hash::make($validated['password']);
             $usuario->idTipo = $validated['idTipo'];
-
+            
             $usuario->save();
+
+            $idLocal = $request->idLocal;
+            if($usuario->idTipo == 2 && $idLocal != null) {
+                $local = Local::find($idLocal);
+                if ($local && $local->idUsuario === null) {
+                    $local->idUsuario = $usuario->id;
+                    $local->save();
+                }
+                  
+            }
 
             return redirect()->route('login')->with('success', 'Registro exitoso.');
         } catch (ValidationException $e) {

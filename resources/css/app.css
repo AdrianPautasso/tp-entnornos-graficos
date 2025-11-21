@@ -9,3 +9,62 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Asegura que el cuerpo ocupe al menos el 100% del alto de la ventana */
+}
+.navbar.fixed-top {
+    z-index: 1030; /* Asegura que el header esté por encima de otros elementos */
+}
+.footer.fixed-bottom {
+    z-index: 1030; /* Asegura que el footer esté por encima de otros elementos */
+}
+
+/* Contenedor principal para el contenido de la página (entre el header y el footer) */
+.page-content-wrapper {
+    flex-grow: 1; /* Permite que este contenedor ocupe el espacio vertical restante */
+    display: flex; /* Habilita flexbox para el sidebar y el contenido principal */
+    margin-top: 56px; /* Espacio para el header fijo */
+    margin-bottom: 56px; /* Espacio para el footer fijo */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+}
+
+/* Estilos del Sidebar para pantallas de escritorio */
+.sidebar-desktop {
+    width: 250px; /* Ancho fijo para el sidebar en pantallas grandes */
+    flex-shrink: 0; /* Evita que el sidebar se encoja */
+    background-color: #f8f9fa; /* Fondo claro para el sidebar */
+    padding: 20px;
+    border-right: 1px solid #dee2e6;
+    overflow-y: auto; /* Permite que el contenido del sidebar tenga scroll si es necesario */
+    position: sticky; /* Hace que el sidebar sea pegajoso dentro de su contenedor */
+    top: 56px; /* Posiciona el sidebar debajo del header fijo */
+    height: calc(100vh - 112px); /* Altura completa entre el header y el footer */
+}
+
+/* Área del contenido principal */
+.main-content-area {
+    flex-grow: 1; /* El contenido principal ocupa el espacio horizontal restante */
+    padding: 20px;
+    overflow-y: auto; /* Permite que el contenido principal tenga scroll si es necesario */
+}
+
+/* Oculta el botón de alternar la barra de navegación principal en el escritorio */
+@media (min-width: 992px) { /* A partir del breakpoint 'lg' */
+    .navbar-toggler {
+        display: none;
+    }
+}
+
+/* Ajustes para móviles: oculta el sidebar de escritorio, muestra el botón de offcanvas */
+@media (max-width: 767.98px) { /* Por debajo del breakpoint 'md' */
+    .sidebar-desktop {
+        display: none !important; /* Oculta el sidebar de escritorio en móviles */
+    }
+    .main-content-area {
+        width: 100%; /* El contenido principal ocupa todo el ancho en móviles */
+    }
+}

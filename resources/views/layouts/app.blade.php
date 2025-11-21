@@ -7,6 +7,8 @@
 
     <!-- Bootstrap 5 (opcional pero recomendado) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+   
 </head>
 <body class="d-flex flex-column min-vh-100">
 
@@ -46,13 +48,28 @@
             </ul>
           </li>
         </ul>
+        @else
+          @if (!Request::is('login') && !Request::is('register'))
+          <ul class="navbar-nav ms-auto">
+              <li class="nav-item me-2">
+                  <a href="{{ route('login') }}" class="btn btn-outline-primary">
+                      <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar sesión
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a href="{{ route('register') }}" class="btn btn-primary">
+                      <i class="bi bi-person-plus me-1"></i> Registrarse
+                  </a>
+              </li>
+          </ul>
+          @endif
         @endauth
 
       </div>
     </div>
   </nav>
 
-    <main class="container">
+    <main class="container v-100">
         @yield('content')
     </main>
 
@@ -71,5 +88,6 @@
 
 
 </body>
+
 
 </html>

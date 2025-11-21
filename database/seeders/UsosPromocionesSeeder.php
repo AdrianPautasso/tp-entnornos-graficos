@@ -16,7 +16,7 @@ class UsosPromocionesSeeder extends Seeder
     {
         $usos_promociones = [
             ['idUsuario' => 11, 'idPromocion' => 1, 'fechaUso' => Carbon::now()->subDays(5)->toDateString(), 'estado' => 'Enviada'],
-            ['idUsuario' => 3,  'idPromocion' => 2, 'fechaUso' => Carbon::now()->subDays(4)->toDateString(), 'estado' => 'Aceptada'],
+            ['idUsuario' => 10,  'idPromocion' => 2, 'fechaUso' => Carbon::now()->subDays(4)->toDateString(), 'estado' => 'Aceptada'],
             ['idUsuario' => 10, 'idPromocion' => 3, 'fechaUso' => Carbon::now()->subDays(3)->toDateString(), 'estado' => 'Rechazada'],
             ['idUsuario' => 9,  'idPromocion' => 4, 'fechaUso' => Carbon::now()->subDays(2)->toDateString(), 'estado' => 'Enviada'],
             ['idUsuario' => 8,  'idPromocion' => 1, 'fechaUso' => Carbon::now()->subDay()->toDateString(), 'estado' => 'Aceptada'],

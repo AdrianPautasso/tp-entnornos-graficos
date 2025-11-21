@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Promocion extends Model
 {
+    use HasFactory;
+
     protected $table = 'promociones';
     protected $primaryKey = 'id';
 
@@ -26,7 +29,7 @@ class Promocion extends Model
 
     public function categoriaMinima()
     {
-        return $this->belongsTo(CategoriaCliente::class, 'codCategoriaMinimaCliente');
+        return $this->belongsTo(CategoriaCliente::class, 'idCategoriaMinima');
     }
 
     public function local()
@@ -45,6 +48,7 @@ class Promocion extends Model
         return self::whereDate('fechaDesde', '<=', now())
             ->whereDate('fechaHasta', '>=', now())
             ->where('estado', 'Aprobada')
+            ->with('local')
             ->latest()
             ->get();
     }
@@ -64,7 +68,12 @@ class Promocion extends Model
                     ->whereDate('fechaDesde', '<=', now())
                     ->whereDate('fechaHasta', '>=', now())
                     ->latest()
+                    ->with('local')
                     ->get();
     
+    }
+
+    public function usosPromocion() {
+        return $this->hasMany(UsoPromocion::class, 'idPromocion')->where('estado', 'Aceptada');
     }
 }

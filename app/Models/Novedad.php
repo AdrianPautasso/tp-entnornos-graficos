@@ -18,6 +18,11 @@ class Novedad extends Model
         'idCategoriaMinima'
     ];
 
+    public function categoria()
+    {
+        return $this->hasOne(CategoriaCliente::class, 'id', 'idCategoriaMinima');
+    }
+
     public static function getVigentes()
     {
         $hoy = Carbon::today();

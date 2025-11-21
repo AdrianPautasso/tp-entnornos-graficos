@@ -4,6 +4,12 @@
 <div class="container">
     <h2>Registro de Usuario</h2>
 
+    <h3>Correcciones</h3>
+    <ul>
+        <li>Registrar solo clientes y dueños.</li>
+        <li>Al dueño, setear estado = Pendiente</li>
+    </ul>
+
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -36,9 +42,25 @@
             <label for="idTipo" class="form-label">Tipo de Usuario</label>
             <select name="idTipo" id="idTipo" class="form-select" required>
                 <option value="">Seleccione un tipo...</option>
-                <option value="1" {{ old('idTipo') == 1 ? 'selected' : '' }}>Administrador</option>
-                <option value="2" {{ old('idTipo') == 2 ? 'selected' : '' }}>Dueño de local</option>
-                <option value="3" {{ old('idTipo') == 3 ? 'selected' : '' }}>Cliente</option>
+
+                @foreach($tipos as $tipo)
+                    <option value="{{ $tipo->id }}" {{ old('idTipo') == $tipo->id ? 'selected' : '' }}>
+                        {{ $tipo->descripcion }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <!-- Campo idLocal (visible solo si es dueño de local) -->
+        <div class="mb-3" id="showLocal" style="display: none;">
+            <label for="idLocal" class="form-label">Local asignado</label>
+            <select name="idLocal" id="idLocal" class="form-select">
+                <option value="">Seleccione un local...</option>
+                @foreach($locales as $local)
+                    <option value="{{ $local->id }}" {{ old('idLocal') == $local->id ? 'selected' : '' }}>
+                        {{ $local->nombre }}
+                    </option>
+                @endforeach
             </select>
         </div>
 
@@ -55,4 +77,19 @@
         <button type="submit" class="btn btn-primary">Registrarse</button>
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tipoSelect = document.getElementById('idTipo');
+        const local = document.getElementById('showLocal');
+        
+        function toggleidLocal() {
+            local.style.display = tipoSelect.value == 2 ? 'block' : 'none';
+        }
+
+        tipoSelect.addEventListener('change', toggleidLocal);
+        //toggleidLocal(); // ejecutar al cargar la página
+    });
+</script>
+
 @endsection

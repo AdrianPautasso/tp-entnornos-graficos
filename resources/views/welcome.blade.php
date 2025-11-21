@@ -2,7 +2,7 @@
 
 @section('content')
 
-@if(isset($auth))
+
 <div class="container">
 
     <h2>Promociones Vigentes</h2>
@@ -11,10 +11,10 @@
             <div class="col-md-4 mb-3">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $p->id }}</h5>
+                        <h5 class="card-title">{{ $p->local->nombre }}</h5>
                         <p class="card-text">{{ $p->texto }}</p>
                         <p><strong>Válida hasta: </strong> {{ $p->fechaHasta }}</p>
-                        <p><strong>Válida los días: </strong>{{ str_replace(',', ', ',preg_replace('/["\[\]]/', '', $p->diasSemana)); }}</p>
+                        <p><strong>Válida los días: </strong>{{ implode(", ",$p->diasSemana) }}</p>
                     </div>
                 </div>
             </div>
@@ -36,6 +36,6 @@
 
 
 </div>
-@endif
-    
+
+
 @endsection

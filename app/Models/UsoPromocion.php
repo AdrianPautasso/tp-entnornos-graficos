@@ -10,7 +10,7 @@ class UsoPromocion extends Model
     protected $table = 'usos_promociones';
     public $timestamps = true;
     public $incrementing = false;
-    protected $primaryKey = null;
+    protected $primaryKey = 'id';
     
     protected $fillable = [
         'idUsuario',
@@ -18,4 +18,17 @@ class UsoPromocion extends Model
         'fechaUso',
         'estado',
     ];
+
+    public function promocion() {
+        return $this->belongsTo(Promocion::class, 'idPromocion');
+    }
+
+    public function usuario() {
+        return $this->belongsTo(Usuario::class, 'idUsuario');
+    }
+
+    public static function allByUser($idUsuario)
+    {
+        return self::where('idUsuario',$idUsuario)->with('promocion')->get();
+    }
 }

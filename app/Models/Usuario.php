@@ -30,7 +30,7 @@ class Usuario extends Authenticatable
         static::creating(function ($usuario) {
             $tipo = TipoUsuario::find($usuario->idTipo);
 
-            if ($tipo && strtolower($tipo->nombre) === 'dueño') {
+            if ($tipo && strtolower($tipo->descripcion) === 'dueño') {
                 $usuario->aprobado = false;
             } else {
                 $usuario->aprobado = true;
