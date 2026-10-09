@@ -1,6 +1,20 @@
 @extends('layouts.app')
 
+@section('title', 'Agregar Novedad')
+
 @section('content')
+
+@php
+$breadcrumbs = [
+    [
+        'title' => 'Novedades',
+        'url' => route('admin.novedades')
+    ],
+    [
+        'title' => 'Crear novedad'
+    ]
+];
+@endphp
 
 <div class="row">
         {{-- Sidebar Izquierda --}}
@@ -49,7 +63,10 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Guardar Novedad</button>
+                <div class="d-flex align-items-center gap-2">
+            <button type="submit" class="btn btn-primary">Guardar Novedad</button>
+            <a class="btn btn-outline-secondary" href="{{ route("admin.novedades") }}">Cancelar</a>
+            </div>
             </form>
         </div>
 

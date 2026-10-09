@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Promocion;
 use App\Models\Novedad;
+use App\Models\Local;
+use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -24,7 +26,13 @@ class HomeController extends Controller
 
         switch ($user->idTipo) {
             case 1: // Administrador
-                return view('admin.index');
+                $cantidadUsuarios = Usuario::count();
+                $cantidadLocales = Local::count();
+                $cantidadPromociones = Promocion::count();
+                $cantidadNovedades = Novedad::count();
+
+                return view('admin.index', compact('cantidadUsuarios','cantidadLocales','cantidadPromociones','cantidadNovedades')); 
+                
             case 2: // Dueño de local
                 // Mostrar promociones del local(s) del dueño
                 //$locales = $user->locales;

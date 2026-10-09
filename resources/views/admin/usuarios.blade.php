@@ -1,7 +1,16 @@
 @extends('layouts.app')
 
+@section('title', 'Gestión de Usuarios')
+
 @section('content')
 
+@php
+$breadcrumbs = [
+    [
+        'title' => 'Usuarios',
+    ]
+];
+@endphp
 
 <div class="container-fluid">
     <div class="row">
@@ -21,7 +30,7 @@
                         <th>Email</th>
                         <th>Tipo de Usuario</th>
                         <th>Categoría Cliente</th>
-                        <th>Aprobado</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -42,9 +51,9 @@
                             <td>
                             @if ($usuario->idTipo == 2)
                                 @if ($usuario->aprobado)
-                                    ✅
+                                    <span class="badge bg-success">Aprobado</span>
                                 @else
-                                    ❌
+                                    <span class="badge bg-warning text-dark">Pendiente</span>
                                 @endif
                             @endif
                             </td>

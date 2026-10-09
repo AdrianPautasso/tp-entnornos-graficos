@@ -35,4 +35,19 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Contacto
+    |--------------------------------------------------------------------------
+    |
+    | Destinatario de los mensajes enviados desde el formulario de contacto.
+    | Si la variable está vacía o no se define, el controller recurre a
+    | MAIL_FROM_ADDRESS como respaldo para que el envío nunca quede sin destino.
+    |
+    */
+
+    'contacto' => [
+        'destinatario' => env('CONTACTO_DESTINATARIO'),
+    ],
+
 ];

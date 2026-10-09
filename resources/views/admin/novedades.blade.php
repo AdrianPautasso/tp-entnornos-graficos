@@ -1,7 +1,16 @@
 @extends('layouts.app')
 
+@section('title', 'Gestión de Novedades')
+
 @section('content')
 
+@php
+$breadcrumbs = [
+    [
+        'title' => 'Novedades',
+    ]
+];
+@endphp
 
 <div class="container-fluid">
     <div class="row">

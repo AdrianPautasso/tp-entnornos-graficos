@@ -1,6 +1,20 @@
 @extends('layouts.app')
 
+@section('title', 'Editar Local')
+
 @section('content')
+
+@php
+$breadcrumbs = [
+    [
+        'title' => 'Locales',
+        'url' => route('admin.locales')
+    ],
+    [
+        'title' => 'Editar Local'
+    ]
+];
+@endphp
 
 <div class="row">
         {{-- Sidebar Izquierda --}}
@@ -44,7 +58,10 @@
             {{-- idUsuario no se edita desde este formulario --}}
             <input type="hidden" name="idUsuario" value="{{ $local->idUsuario }}">
 
+            <div class="d-flex align-items-center gap-2">
             <button type="submit" class="btn btn-primary">Actualizar Local</button>
+            <a class="btn btn-outline-secondary" href="{{ route("admin.locales") }}">Cancelar</a>
+            </div>
         </form>
     </div>
 @endsection

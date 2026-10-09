@@ -1,6 +1,16 @@
 @extends('layouts.app')
 
+@section('title', 'Uso de Promociones')
+
 @section('content')
+
+@php
+$breadcrumbs = [
+    [
+        'title' => 'Uso Promociones',
+    ]
+];
+@endphp
 
 <div class="container-fluid">
   <div class="row">

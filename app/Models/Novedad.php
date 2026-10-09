@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 class Novedad extends Model
@@ -18,9 +19,9 @@ class Novedad extends Model
         'idCategoriaMinima'
     ];
 
-    public function categoria()
+    public function categoria(): BelongsTo
     {
-        return $this->hasOne(CategoriaCliente::class, 'id', 'idCategoriaMinima');
+        return $this->belongsTo(CategoriaCliente::class, 'idCategoriaMinima');
     }
 
     public static function getVigentes()

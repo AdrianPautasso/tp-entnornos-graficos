@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use App\Models\TipoUsuario;
+use App\Models\CategoriaCliente;
 use App\Models\Local;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,6 +64,15 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
+// Tipos de usuario habilitados para el registro público: solo Cliente y Dueño.
+    // Nunca Administrador. Se resuelve por descripción para no depender del id.
+    private function tiposRegistrables()
+    {
+        return TipoUsuario::all()
+            ->filter(fn ($tipo) => in_array(strtolower($tipo->descripcion), ['cliente', 'dueño']))
+            ->values();
+    }
+
     // Mostrar formulario de registro
     public function showRegisterForm()
     {
@@ -70,9 +80,10 @@ class AuthController extends Controller
             return redirect()->route('home');
         }
 
-        $tipos = TipoUsuario::whereIn('id', [2,3])->get();
+        $tipos = $this->tiposRegistrables();
+        $idDueño = $tipos->first(fn ($tipo) => strtolower($tipo->descripcion) === 'dueño')?->id;
         $locales = Local::whereNull('idUsuario')->get();
-        return view('auth.register', compact('tipos', 'locales'));
+        return view('auth.register', compact('tipos', 'locales', 'idDueño'));
     }
 
     // Procesar registro
@@ -80,7 +91,7 @@ class AuthController extends Controller
         
         try {
 
-            $tiposPermitidos = [2,3];
+            $tiposPermitidos = $this->tiposRegistrables()->pluck('id')->all();
             $validated = $request->validate([
                 'nombre' => 'required|string|max:100',
                 'email' => 'required|email|unique:usuarios,email',
@@ -90,23 +101,40 @@ class AuthController extends Controller
                 'idLocal' => 'nullable|integer|exists:locales,id',
             ]);
 
+            $tipo = TipoUsuario::find($validated['idTipo']);
+            $esDueño = strtolower($tipo->descripcion) === 'dueño';
+
             $usuario = new Usuario();
             $usuario->nombre = $validated['nombre'];
             $usuario->email = $validated['email'];
             $usuario->usuario = $validated['usuario'];
             $usuario->password = Hash::make($validated['password']);
             $usuario->idTipo = $validated['idTipo'];
+            // El dueño se registra en estado Pendiente: un administrador debe aprobarlo
+            // antes de que pueda iniciar sesión. El cliente queda Aprobado.
+            $usuario->aprobado = ! $esDueño;
+            // El cliente arranca en la categoría de menor nivel: es la única que le
+            // garantiza promociones sin que pueda autoasignarse un nivel mayor.
+            // Se resuelve por nivel y no por id para no depender de los datos cargados.
+            $usuario->idCategoriaCliente = $esDueño
+                ? null
+                : CategoriaCliente::orderBy('nivel')->value('id');
             
             $usuario->save();
 
             $idLocal = $request->idLocal;
-            if($usuario->idTipo == 2 && $idLocal != null) {
+            if($esDueño && $idLocal != null) {
                 $local = Local::find($idLocal);
                 if ($local && $local->idUsuario === null) {
                     $local->idUsuario = $usuario->id;
                     $local->save();
                 }
-                  
+                   
+            }
+
+            if ($esDueño) {
+                return redirect()->route('login')->with('success',
+                    'Registro exitoso. Tu cuenta de dueño quedó en estado Pendiente: un administrador debe aprobarla antes de que puedas iniciar sesión.');
             }
 
             return redirect()->route('login')->with('success', 'Registro exitoso.');

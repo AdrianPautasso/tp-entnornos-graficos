@@ -1,6 +1,20 @@
 @extends('layouts.app')
 
+@section('title', 'Nuevo Local')
+
 @section('content')
+
+@php
+$breadcrumbs = [
+    [
+        'title' => 'Locales',
+        'url' => route('admin.locales')
+    ],
+    [
+        'title' => 'Crear Local'
+    ]
+];
+@endphp
 
 <div class="row">
         {{-- Sidebar Izquierda --}}
@@ -42,7 +56,10 @@
                 {{-- idUsuario oculto en null --}}
                 <input type="hidden" name="idUsuario" value="">
 
-                <button type="submit" class="btn btn-primary">Guardar Local</button>
+                <div class="d-flex align-items-center gap-2">
+            <button type="submit" class="btn btn-primary">Guardar Local</button>
+            <a class="btn btn-outline-secondary" href="{{ route("admin.locales") }}">Cancelar</a>
+            </div>
             </form>
         </div>
 

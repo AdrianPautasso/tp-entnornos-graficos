@@ -1,6 +1,20 @@
 @extends('layouts.app')
 
+@section('title', 'Agregar Promoción')
+
 @section('content')
+
+@php
+$breadcrumbs = [
+    [
+        'title' => 'Promociones',
+        'url' => route('promociones')
+    ],
+    [
+        'title' => 'Crear promoción'
+    ]
+];
+@endphp
 
 <div class="row">
         {{-- Sidebar Izquierda --}}
@@ -71,7 +85,10 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Guardar Promocion</button>
+                <div class="d-flex align-items-center gap-2">
+    <button type="submit" class="btn btn-primary">Guardar Promocion</button>
+    <a class="btn btn-outline-secondary ms-2" href="{{ route('promociones') }}">Cancelar</a>
+</div>
             </form>
         </div>
 

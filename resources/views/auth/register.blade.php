@@ -1,14 +1,16 @@
 @extends('layouts.app')
 
+@section('title', 'Registrarse')
+
 @section('content')
 <div class="container">
     <h2>Registro de Usuario</h2>
 
-    <h3>Correcciones</h3>
-    <ul>
-        <li>Registrar solo clientes y dueños.</li>
-        <li>Al dueño, setear estado = Pendiente</li>
-    </ul>
+    <div class="alert alert-info" role="status">
+        Podés registrarte como <strong>cliente</strong> o como <strong>dueño de un local</strong>.
+        Si te registrás como dueño, tu cuenta queda en estado <strong>Pendiente</strong> y un
+        administrador debe aprobarla antes de que puedas iniciar sesión.
+    </div>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -30,7 +32,8 @@
 
         <div class="mb-3">
             <label for="usuario" class="form-label">Nombre de usuario</label>
-            <input type="text" name="usuario" id="usuario" class="form-control" value="{{ old('usuario') }}">
+            <input type="text" name="usuario" id="usuario" class="form-control" value="{{ old('usuario') }}" required>
+            @error('usuario') <div class="text-danger small">{{ $message }}</div> @enderror
         </div>
 
         <div class="mb-3">
@@ -40,7 +43,8 @@
 
         <div class="mb-3">
             <label for="idTipo" class="form-label">Tipo de Usuario</label>
-            <select name="idTipo" id="idTipo" class="form-select" required>
+            <select name="idTipo" id="idTipo" class="form-select" required
+                    data-dueno-id="{{ $idDueño }}">
                 <option value="">Seleccione un tipo...</option>
 
                 @foreach($tipos as $tipo)
@@ -52,7 +56,9 @@
         </div>
 
         <!-- Campo idLocal (visible solo si es dueño de local) -->
-        <div class="mb-3" id="showLocal" style="display: none;">
+        <!-- El servidor decide el estado inicial (para funcionar sin JS y para no perder
+             la selección al volver con errores) y el script lo ajusta al cambiar el tipo. -->
+        <div class="mb-3" id="showLocal" @if (old('idTipo') != $idDueño) hidden @endif>
             <label for="idLocal" class="form-label">Local asignado</label>
             <select name="idLocal" id="idLocal" class="form-select">
                 <option value="">Seleccione un local...</option>
@@ -84,11 +90,12 @@
         const local = document.getElementById('showLocal');
         
         function toggleidLocal() {
-            local.style.display = tipoSelect.value == 2 ? 'block' : 'none';
+            // El id del dueño llega en data-dueno-id: no se hardcodea el 2.
+            local.hidden = tipoSelect.value != tipoSelect.dataset.duenoId;
         }
 
         tipoSelect.addEventListener('change', toggleidLocal);
-        //toggleidLocal(); // ejecutar al cargar la página
+        toggleidLocal(); // sincroniza al cargar la página
     });
 </script>
 

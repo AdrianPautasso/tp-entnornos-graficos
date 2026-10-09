@@ -6,6 +6,7 @@
 use App\Http\Controllers\LocalController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NovedadController;
 use App\Http\Controllers\PromocionController;
@@ -57,6 +58,7 @@ Route::middleware(['auth', 'role:2'])->group(function () {
     Route::get('/promociones/nuevo', [PromocionController::class, 'agregarPromocion'])->name('dueno.promociones_add');
     Route::post('/promociones', [PromocionController::class, 'store'])->name('promociones.store');
     Route::get('/gestionUsoPromociones',[UsoPromocionController::class, 'getGestionUsoPromociones'])->name('dueno.gestionUsoPromociones');
+    Route::get('/usoPromociones', [UsoPromocionController::class, 'index'])->name('usoPromociones');
     Route::put('/usoPromociones/aceptar/{usoPromocion}', [UsoPromocionController::class, 'update'])->name('usoPromociones.aceptar');
     Route::put('/usoPromociones/rechazar/{usoPromocion}', [UsoPromocionController::class, 'update'])->name('usoPromociones.rechazar');
 });
@@ -73,9 +75,34 @@ Route::middleware(['auth', 'role:3'])->group(function () {
     Route::post('/usoPromociones', [UsoPromocionController::class, 'store'])->name('usopromociones.store');
 });
 
-Route::get('/usoPromociones', [UsoPromocionController::class, 'index'])->name('usoPromociones');
 Route::get('/promociones', [PromocionController::class, 'index'])->name('promociones');
 
+
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});
+
+Route::view('/preguntas-frecuentes', 'faq')
+    ->name('faq');
+
+// Check 29: página de ayuda sobre cómo usar el sitio
+Route::view('/ayuda', 'ayuda')
+    ->name('ayuda');
+
+Route::view('/sobre-shopping', 'sobreShopping')
+    ->name('sobreShopping');
+
+// Check 59: organigrama y autoridades con contacto
+Route::view('/organigrama', 'organigrama')
+    ->name('organigrama');
+
+// Check 62: glosario de términos técnicos
+Route::view('/glosario', 'glosario')
+    ->name('glosario');
+
+// Contacto
+Route::get('/contacto', [ContactoController::class, 'showForm'])->name('contacto');
+Route::post('/contacto', [ContactoController::class, 'enviar'])->name('contacto.enviar');
 /*
 
 

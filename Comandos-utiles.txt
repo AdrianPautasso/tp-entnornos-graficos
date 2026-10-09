@@ -9,3 +9,16 @@ php artisan migrate           -> Crea las tablas definidas en las migrations.
 
 
 php artisan serve   -> Levanta el servidor y el proyecto
+
+
+Para generar una contraseña:
+adrian@adrian-System-Product-Name:~/tp-entornos-graficos$ php artisan tinker
+Psy Shell v0.12.8 (PHP 8.3.6 — cli) by Justin Hileman
+> config('hashing.driver');
+= "bcrypt"
+> Hash::make('adrian');
+= "$2y$12$YYTZCfPy/tQvR.tBfskThe1ZjIGC/24dBuOaw36FwSw7MqY7Uu30u"
+
+
+
+

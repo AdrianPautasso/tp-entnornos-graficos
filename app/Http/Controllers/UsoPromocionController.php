@@ -19,38 +19,15 @@ class UsoPromocionController extends Controller
     public function index()
     {
         $usuario = auth()->user();
-        $idTipoUsuario = $usuario->idTipo;
-        $idUsuario = $usuario->id;
-        switch ($idTipoUsuario) {
-            case 1:
-                // Admin
-                echo "El usuario es del tipo 1.";
-                break;
-            
-            case 2:
-                // Dueño
 
-                
+        // Solo los dueños (idTipo 2) acceden a esta vista: el middleware
+        // 'role:2' ya redirige a los invitados al login y bloquea al resto.
+        // El listado se limita a los locales que el usuario posee.
+        $locales = Local::where('idUsuario', $usuario->id)->get();
+        $ids_locales = $locales->pluck('id')->all();
+        $promociones = Promocion::whereIn('idLocal', $ids_locales)->withCount('usosPromocion')->get();
 
-                // Mostrar las solicitudes de promociones de los locales del cual es dueño
-                $locales = Local::where('idUsuario',$idUsuario)->get();
-                $ids_locales = $locales->pluck('id')->all();
-                $promociones = Promocion::whereIn('idLocal', $ids_locales)->withCount('usosPromocion')->get();
-
-                return view('usoPromociones', compact('promociones','locales'));
-                echo "El usuario es del tipo 2.";
-                break;
-            
-            case 3:
-                // Cliente
-                echo "El usuario es del tipo 3.";
-                break;
-            
-            default:
-                // Código a ejecutar si $idTipoUsuario no es 1, 2 o 3
-                echo "Tipo de usuario no reconocido.";
-                break;
-        }
+        return view('usoPromociones', compact('promociones','locales'));
     }
 
     /**
@@ -124,6 +101,7 @@ class UsoPromocionController extends Controller
      */
     public function update(Request $request, UsoPromocion $usoPromocion)
     {
+        $this->autorizarSobreUso($usoPromocion);
 
         // Validación general de los campos que podrían actualizarse
         $validatedData = $request->validate([
@@ -144,8 +122,28 @@ class UsoPromocionController extends Controller
      */
     public function destroy($idUsoPromocion) {
         $usoPromocion = UsoPromocion::findOrFail($idUsoPromocion);
+        $this->autorizarSobreUso($usoPromocion);
+
         $usoPromocion->delete();
         return redirect()->back()->with('success', 'Uso Promoción cancelada correctamente.');
+    }
+
+    /**
+     * Verifica que el usuario tenga autoridad sobre el uso de promoción: un
+     * dueño solo puede operar sobre usos de promociones de sus propios
+     * locales y un cliente solo sobre los usos que él mismo realizó.
+     */
+    private function autorizarSobreUso(UsoPromocion $usoPromocion): void
+    {
+        $usuario = auth()->user();
+
+        $autorizado = $usuario->idTipo == 2
+            ? Promocion::whereIn('idLocal', Local::where('idUsuario', $usuario->id)->select('id'))
+                ->whereKey($usoPromocion->idPromocion)
+                ->exists()
+            : $usoPromocion->idUsuario === $usuario->id;
+
+        if (!$autorizado) { abort(403, 'Acceso denegado'); }
     }
 
     public function getGestionUsoPromociones() {

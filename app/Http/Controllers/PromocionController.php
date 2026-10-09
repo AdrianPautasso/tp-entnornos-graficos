@@ -20,6 +20,14 @@ class PromocionController extends Controller
      */
     public function index(Request $request) {
         $usuario = auth()->user();
+
+        // La ruta es pública: los invitados ven un listado de solo lectura.
+        if ($usuario === null) {
+            $promociones = Promocion::getVigentesYAprobadas();
+
+            return view('publico.promociones', compact('promociones'));
+        }
+
         $idTipo = $usuario->idTipo;
         $idUsuario = $usuario->id;
         if ($idTipo == 2) {
@@ -75,7 +83,16 @@ class PromocionController extends Controller
                 'fechaHasta' => 'required|date|after:fecha_desde',
                 'idCategoriaMinima' => 'integer|exists:categorias_clientes,id',
                 'diasSemana' => 'required',
-                'idLocal' => 'required|exists:locales,id'
+                'idLocal' => [
+                    'required',
+                    'integer',
+                    'exists:locales,id',
+                    function ($attribute, $value, $fail) use ($usuario) {
+                        if (! Local::where('id', $value)->where('idUsuario', $usuario->id)->exists()) {
+                            $fail('El local seleccionado no te pertenece.');
+                        }
+                    }
+                ]
             ]);
 
             $promocion = new Promocion();
@@ -140,12 +157,13 @@ class PromocionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($idPromocion) {
-        $promocion = Promocion::findOrFail($idPromocion);
-        $promocion->delete();
+public function destroy($idPromocion) {
+          $promocion = Promocion::whereIn('idLocal', Local::where('idUsuario', auth()->id())->select('id'))
+              ->findOrFail($idPromocion);
+          $promocion->delete();
 
-        return redirect()->back()->with('success', 'Promoción eliminada correctamente.');
-    }
+          return redirect()->back()->with('success', 'Promoción eliminada correctamente.');
+      }
 
     public function agregarPromocion() {
         $categorias = CategoriaCliente::get();

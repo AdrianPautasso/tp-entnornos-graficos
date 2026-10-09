@@ -1,7 +1,16 @@
 @extends('layouts.app')
 
+@section('title', 'Gestión de Locales')
+
 @section('content')
 
+@php
+$breadcrumbs = [
+    [
+        'title' => 'Locales'
+    ]
+];
+@endphp
 
 <div class="container-fluid">
     <div class="row">

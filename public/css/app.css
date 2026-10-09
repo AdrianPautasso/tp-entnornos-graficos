@@ -1,0 +1,23 @@
+/* Hoja de estilos propia de la aplicación (referenciada por los layouts vía asset('css/app.css')) */
+
+/* Check 15/56: diferenciar enlaces visitados y no visitados, solo en los menús laterales.
+   Bootstrap no define :visited; el color por defecto (sin visitar) es el primary #0d6efd. */
+#sidebarMenu a:visited:not(.active) {
+    color: #6f42c1;
+}
+
+#sidebarMenu a:visited:hover,
+#sidebarMenu a:visited:focus {
+    color: #5a2e9e;
+}
+/* Check 21: destacar campos obligatorios en formularios.
+   Muestra un asterisco rojo al final del label SOLO si el campo required
+   no fue completado (:user-invalid = required + vacío + intento de envío).
+   ::after por separado por tipo de control para no colorear el label. */
+label:has(+ input[required]:user-invalid)::after,
+label:has(+ select[required]:user-invalid)::after,
+label:has(+ textarea[required]:user-invalid)::after {
+    content: " *";
+    color: #b02a37;
+    font-weight: bold;
+}

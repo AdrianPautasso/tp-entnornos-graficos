@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
+@section('title', 'Gestión de Uso de Promociones')
+
 @section('content')
+
+@php
+$breadcrumbs = [
+    [
+        'title' => 'Gestión Uso de promociones',
+        'url' => route('dueno.gestionUsoPromociones')
+    ]
+];
+@endphp
+
 
 <div class="container-fluid">
     <div class="row">
