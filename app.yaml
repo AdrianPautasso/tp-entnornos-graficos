@@ -2,15 +2,3 @@ kind: wasmer.io/App.v0
 name: tp-entornos-graficos
 owner: adrianpautasso
 package: .
-
-jobs:
-  - name: ejecutar-migraciones
-    trigger: post-deployment
-    action:
-      execute:
-        command: php
-        cli_args:
-          - artisan
-          - migrate
-          - --force
-        timeout: 5m
